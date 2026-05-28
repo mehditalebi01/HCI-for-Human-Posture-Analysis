@@ -58,3 +58,13 @@ python src/pose_estimation.py --input data/frames --output-csv data/output/keypo
 ```
 
 This command reads image frames from `data/frames`, detects human body keypoints, saves the keypoint data to `data/output/keypoints.csv`, and saves annotated skeleton images to `data/output/pose_frames`.
+
+## Run Live Pose Visualization
+
+To watch pose estimation on a video frame by frame:
+
+```bash
+python src/live_pose_demo.py --video data/videos/test.mp4
+```
+
+Press `q` in the video window to quit the live demo.
