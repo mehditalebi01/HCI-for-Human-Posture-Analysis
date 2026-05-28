@@ -1,6 +1,6 @@
 # Sports Video Analysis Pipeline
 
-This is a simple beginner-friendly computer vision project for extracting frames from sports videos.
+This is a simple beginner-friendly computer vision project for extracting frames from sports videos and running 2D human pose estimation.
 
 ## Project Structure
 
@@ -48,3 +48,13 @@ python src/extract_frames.py --video data/videos/test.mp4 --output data/frames -
 ```
 
 This command reads `data/videos/test.mp4` and saves one frame every 30 frames into `data/frames`.
+
+## Run 2D Pose Estimation
+
+After extracting frames, run pose estimation with RTMLib:
+
+```bash
+python src/pose_estimation.py --input data/frames --output-csv data/output/keypoints.csv --output-frames data/output/pose_frames
+```
+
+This command reads image frames from `data/frames`, detects human body keypoints, saves the keypoint data to `data/output/keypoints.csv`, and saves annotated skeleton images to `data/output/pose_frames`.
