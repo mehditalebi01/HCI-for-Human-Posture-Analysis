@@ -4,3 +4,4 @@ pandas
 matplotlib
 rtmlib
 tqdm
+onnxruntime-gpu[cuda,cudnn]

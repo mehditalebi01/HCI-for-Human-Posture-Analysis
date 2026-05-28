@@ -52,7 +52,7 @@ def estimate_poses(input_dir, output_csv, output_frames):
 
     # RTMLib downloads/loads the selected model the first time it is used.
     # CPU is easiest for beginners. Change device to "cuda" if you have a GPU setup.
-    device = "cpu"
+    device = "cuda"
     backend = "onnxruntime"
     openpose_skeleton = False
     pose_model = Body(

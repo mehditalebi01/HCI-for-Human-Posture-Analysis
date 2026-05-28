@@ -6,6 +6,17 @@ import cv2
 import numpy as np
 
 
+import os
+from pathlib import Path
+
+venv = Path(__file__).resolve().parent.parent / ".venv"
+
+os.add_dll_directory(str(venv / "Lib/site-packages/nvidia/cudnn/bin"))
+os.add_dll_directory(str(venv / "Lib/site-packages/nvidia/cublas/bin"))
+import onnxruntime as ort
+ort.preload_dlls(directory="")
+print(ort.get_available_providers())
+
 def resize_if_large(frame, max_width=960):
     """Resize large frames so pose estimation runs faster."""
     height, width = frame.shape[:2]
@@ -49,13 +60,13 @@ def run_live_pose_demo(video_path):
         print(f"Error: could not open video file: {video_file}")
         return False
 
-    # CPU is easiest for beginners. Change device to "cuda" if you have a GPU setup.
-    device = "cpu"
+    # CPU or cuda 
+    device = "cuda"
     backend = "onnxruntime"
     openpose_skeleton = False
     pose_model = Body(
         to_openpose=openpose_skeleton,
-        mode="balanced",
+        mode="performance",
         backend=backend,
         device=device,
     )
