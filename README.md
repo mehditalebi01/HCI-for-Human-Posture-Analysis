@@ -1,70 +1,164 @@
-# Sports Video Analysis Pipeline
+# Human Posture Analysis for Sports Video
 
-This is a simple beginner-friendly computer vision project for extracting frames from sports videos and running 2D human pose estimation.
+This project is a modular computer vision pipeline for sports posture analysis. It currently supports video frame extraction, 2D human pose estimation with RTMLib, and live pose visualization. The architecture is prepared for later stages such as tracking, smoothing, biomechanics, action recognition, and fatigue or injury-risk scoring.
 
-## Project Structure
+## Architecture
 
-```text
-data/
-  videos/   # Put input videos here
-  frames/   # Extracted frames will be saved here
-  output/   # Save processed results here later
-src/        # Python source code
-scripts/    # Helper scripts
+```mermaid
+flowchart TD
+    A["Video or image input"] --> B["Frame extraction"]
+    B --> C["Human detection"]
+    C --> D["Multi-object tracking"]
+    D --> E["2D pose estimation"]
+    E --> F["Pose smoothing"]
+    F --> G["3D pose estimation"]
+    G --> H["Biomechanical features"]
+    H --> I["Action recognition"]
+    I --> J["Fatigue and injury-risk scoring"]
+    J --> K["Visualization and dashboard"]
 ```
 
-## Install Dependencies
+Reusable code lives in `src/hpa/`. Command-line scripts live in `src/scripts/`.
 
-Create a virtual environment if you want to keep dependencies separate:
+## Setup
+
+Create and activate a virtual environment:
 
 ```bash
 python -m venv .venv
-```
-
-Activate it on Windows:
-
-```bash
 .venv\Scripts\activate
 ```
 
-Install the required packages:
+Install dependencies and the local package:
 
 ```bash
 pip install -r requirements.txt
+pip install -e .
 ```
 
-## Extract Frames From a Video
+After editable install, imports work like:
 
-Place a video file at:
+```python
+from hpa.io.video_io import extract_frames
+```
+
+## Model Management
+
+Models are stored locally under `models/`. Real model files are not committed to GitHub because they are large. The tracked `.gitkeep` files only preserve the folder structure.
+
+Download the configured RTMLib detector and pose models:
+
+```bash
+python src/scripts/download_models.py
+```
+
+The model sources and local target paths are defined in `configs/models.yaml`. If local model files are missing, the pose estimator prints a clear warning and falls back to RTMLib defaults, which may download models on first use.
+
+## Data Folders
+
+The new standard paths are:
 
 ```text
-data/videos/test.mp4
+data/raw/videos/                  # input videos
+data/raw/images/                  # input images
+data/interim/frames/              # extracted frames
+data/processed/detections/        # future human detections
+data/processed/keypoints/         # 2D pose keypoints
+data/processed/tracks/            # future tracking results
+data/processed/smoothed_keypoints/# future smoothed poses
+data/processed/biomechanics/      # future biomechanical features
+data/outputs/annotated_frames/    # rendered pose frames
+data/outputs/videos/              # rendered videos
+data/outputs/reports/             # generated reports
 ```
 
-Run the frame extraction script:
+Older folders such as `data/videos/` and `data/frames/` may still exist from earlier stages. Keep using them for old experiments if needed, but new work should use `data/raw/videos/` and `data/interim/frames/`.
+
+## Stage 1: Extract Frames
+
+Place a video at `data/raw/videos/test.mp4`, then run:
 
 ```bash
-python src/extract_frames.py --video data/videos/test.mp4 --output data/frames --step 30
+python src/scripts/extract_frames.py --video data/raw/videos/test.mp4
 ```
 
-This command reads `data/videos/test.mp4` and saves one frame every 30 frames into `data/frames`.
+By default, this saves one frame every 30 frames into `data/interim/frames`.
 
-## Run 2D Pose Estimation
+## Stage 2: Pose Estimation on Frames
 
-After extracting frames, run pose estimation with RTMLib:
+Run 2D pose estimation and save both CSV keypoints and annotated images:
 
 ```bash
-python src/pose_estimation.py --input data/frames --output-csv data/output/keypoints.csv --output-frames data/output/pose_frames
+python src/scripts/run_pose_on_frames.py
 ```
 
-This command reads image frames from `data/frames`, detects human body keypoints, saves the keypoint data to `data/output/keypoints.csv`, and saves annotated skeleton images to `data/output/pose_frames`.
+By default, this reads frames from `data/interim/frames`, saves keypoints to `data/processed/keypoints/keypoints.csv`, and saves annotated frames to `data/outputs/annotated_frames`.
 
-## Run Live Pose Visualization
+The CSV schema is:
 
-To watch pose estimation on a video frame by frame:
+```text
+frame_name, person_id, keypoint_id, x, y, confidence
+```
+
+## Live Pose Demo
+
+Run live visualization on a video:
 
 ```bash
-python src/live_pose_demo.py --video data/videos/test.mp4
+python src/scripts/live_pose_demo.py --video data/raw/videos/test.mp4
 ```
 
-Press `q` in the video window to quit the live demo.
+By default, the live demo saves:
+
+```text
+data/processed/keypoints/live_keypoints.csv
+data/outputs/videos/live_pose_demo.mp4
+```
+
+The live CSV includes timing columns:
+
+```text
+frame_name, frame_index, time_sec, person_id, keypoint_id, x, y, confidence
+```
+
+Press `q` in the OpenCV window to quit.
+
+For better speed, you can use optional arguments:
+
+```bash
+python src/scripts/live_pose_demo.py --video data/raw/videos/test.mp4 --device cuda --mode lightweight --max-width 640
+```
+
+To choose custom live outputs:
+
+```bash
+python src/scripts/live_pose_demo.py --video data/raw/videos/test.mp4 --output-csv data/processed/keypoints/my_live_keypoints.csv --output-video data/outputs/videos/my_live_demo.mp4
+```
+
+To display only and skip saving:
+
+```bash
+python src/scripts/live_pose_demo.py --video data/raw/videos/test.mp4 --no-save
+```
+
+## Compatibility Commands
+
+The earlier script paths are still present as wrappers:
+
+```bash
+python src/extract_frames.py --video data/raw/videos/test.mp4 --output data/interim/frames --step 30
+python src/pose_estimation.py --input data/interim/frames --output-csv data/processed/keypoints/keypoints.csv --output-frames data/outputs/annotated_frames
+python src/live_pose_demo.py --video data/raw/videos/test.mp4
+```
+
+## Roadmap
+
+- `hpa.io`: video input, image input, frame extraction
+- `hpa.detection`: human detection
+- `hpa.tracking`: multi-object tracking
+- `hpa.pose`: 2D pose estimation and visualization
+- `hpa.smoothing`: temporal keypoint smoothing
+- `hpa.biomechanics`: joint angles and movement features
+- `hpa.actions`: sport action recognition
+- `hpa.risk`: fatigue and injury-risk scoring
+- dashboard layer: visual analytics and reports

@@ -1,0 +1,9 @@
+detection:
+  name: yolox_m_humanart
+  path: models/detection/yolox_m_humanart.onnx
+  source_url: https://download.openmmlab.com/mmpose/v1/projects/rtmposev1/onnx_sdk/yolox_m_8xb8-300e_humanart-c2c7a14a.zip
+
+pose:
+  name: rtmpose_m_body7
+  path: models/pose/rtmpose_m_body7.onnx
+  source_url: https://download.openmmlab.com/mmpose/v1/projects/rtmposev1/onnx_sdk/rtmpose-m_simcc-body7_pt-body7_420e-256x192-e48f03d0_20230504.zip

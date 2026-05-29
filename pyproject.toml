@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hpa-sports-posture"
+version = "0.1.0"
+description = "A modular computer vision pipeline for sports posture analysis."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "opencv-python",
+    "numpy",
+    "pandas",
+    "matplotlib",
+    "tqdm",
+    "rtmlib",
+    "pyyaml",
+    "onnxruntime",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

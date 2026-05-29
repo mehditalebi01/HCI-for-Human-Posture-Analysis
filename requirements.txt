@@ -2,6 +2,7 @@ opencv-python
 numpy
 pandas
 matplotlib
-rtmlib
 tqdm
-onnxruntime-gpu[cuda,cudnn]
+rtmlib
+pyyaml
+onnxruntime

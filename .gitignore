@@ -16,3 +16,8 @@ __pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Local model weights are large and should be downloaded locally.
+models/*
+!models/**/
+!models/**/.gitkeep

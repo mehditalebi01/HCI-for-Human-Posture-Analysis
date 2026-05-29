@@ -1,0 +1,1 @@
+"""Pose smoothing stage."""

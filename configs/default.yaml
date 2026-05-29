@@ -1,0 +1,19 @@
+project:
+  name: hpa-sports-posture
+
+paths:
+  raw_videos: data/raw/videos
+  raw_images: data/raw/images
+  frames: data/interim/frames
+  keypoints: data/processed/keypoints
+  annotated_frames: data/outputs/annotated_frames
+
+video:
+  frame_step: 30
+
+pose:
+  device: cpu
+  backend: onnxruntime
+  mode: balanced
+  max_width: 960
+  keypoint_threshold: 0.5
