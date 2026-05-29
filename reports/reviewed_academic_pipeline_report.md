@@ -1,9 +1,4 @@
-# Computer Vision Pipeline for Human Posture and Sports Movement Analysis  
-## Repository-Based Academic Report and Implementation Review
-
-**Project repository:** `mehditalebi01/HCI-for-Human-Posture-Analysis`  
-**Report purpose:** academic description of the implemented pipeline, tool/model choices, experimental results, limitations, and next development steps.  
-**Status:** research prototype; not a validated clinical, diagnostic, or full 3D biomechanical analysis system.
+﻿# Computer Vision Pipeline for Human Posture and Sports Movement Analysis  
 
 ---
 
@@ -43,7 +38,7 @@ The architecture is already compatible with future upgrades because RTMPose outp
 
 ---
 
-## 3. Stage 0 — Environment, Dependencies, and Model Management
+## 3. Stage 0 - Environment, Dependencies, and Model Management
 
 The project dependencies include `opencv-python`, `numpy`, `pandas`, `matplotlib`, `tqdm`, `rtmlib`, `pyyaml`, and `onnxruntime`, which form a lightweight Python stack for video processing, numerical computation, tabular analysis, plotting, progress reporting, model inference, configuration, and ONNX deployment [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html), [[5]](https://github.com/Tau-J/rtmlib), [[8]](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html), [[9]](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html). This dependency set is suitable for a student research prototype because it avoids a heavy full MMPose installation while still using modern pose-estimation models through RTMLib [[4]](https://arxiv.org/abs/2303.07399), [[5]](https://github.com/Tau-J/rtmlib), [[7]](https://mmpose.readthedocs.io/).
 
@@ -66,7 +61,7 @@ This convention makes the pipeline reproducible because the report can state exa
 
 ---
 
-## 4. Stage 1 — Video Input and Frame Extraction
+## 4. Stage 1 - Video Input and Frame Extraction
 
 The first operational stage reads a video file and extracts frames using OpenCV, which is a standard computer-vision library for camera and video-file input in Python [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html). In the current project, frame extraction is useful because it creates inspectable image files before running the pose estimator, allowing the developer to verify that the subject, camera angle, lighting, and sampling rate are appropriate [[1]](https://github.com/mehditalebi01/HCI-for-Human-Posture-Analysis), [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html).
 
@@ -76,19 +71,19 @@ The recommended use of frame extraction is therefore two-level: use sparse extra
 
 ---
 
-## 5. Stage 2 — 2D Human Pose Estimation
+## 5. Stage 2 - 2D Human Pose Estimation
 
-The second stage estimates 2D body keypoints using RTMLib’s `Body` wrapper, which provides a simpler interface to RTMPose-based human pose estimation than setting up the complete MMPose framework manually [[4]](https://arxiv.org/abs/2303.07399), [[5]](https://github.com/Tau-J/rtmlib), [[7]](https://mmpose.readthedocs.io/). RTMPose is an appropriate choice because it was designed as a real-time multi-person pose estimation framework with strong speed-accuracy characteristics, which directly matches the project’s need for both offline processing and live visualization [[4]](https://arxiv.org/abs/2303.07399).
+The second stage estimates 2D body keypoints using RTMLib's `Body` wrapper, which provides a simpler interface to RTMPose-based human pose estimation than setting up the complete MMPose framework manually [[4]](https://arxiv.org/abs/2303.07399), [[5]](https://github.com/Tau-J/rtmlib), [[7]](https://mmpose.readthedocs.io/). RTMPose is an appropriate choice because it was designed as a real-time multi-person pose estimation framework with strong speed-accuracy characteristics, which directly matches the project's need for both offline processing and live visualization [[4]](https://arxiv.org/abs/2303.07399).
 
 The current pose-estimation layer wraps RTMLib inside a project-specific `RTMPoseEstimator` class, which is good software engineering because model initialization, local checkpoint paths, backend selection, CUDA warnings, and folder inference are kept in one reusable location [[1]](https://github.com/mehditalebi01/HCI-for-Human-Posture-Analysis), [[5]](https://github.com/Tau-J/rtmlib), [[8]](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html). The wrapper also makes future upgrades easier because the outer pipeline can keep the same interface even if the internal model changes from RTMPose-M to RTMPose-L, ViTPose, or another MMPose-compatible estimator [[4]](https://arxiv.org/abs/2303.07399), [[7]](https://mmpose.readthedocs.io/), [[18]](https://arxiv.org/abs/2204.12484).
 
-RTMLib’s default human-detection stage commonly relies on YOLOX-style detectors, and YOLOX is a strong practical choice because it uses an anchor-free design, decoupled head, and modern label-assignment strategy to improve object-detection performance [[5]](https://github.com/Tau-J/rtmlib), [[6]](https://arxiv.org/abs/2107.08430). In this pipeline, the detector is not the final research output, but it is critical because poor person bounding boxes will degrade every downstream keypoint, smoothing, and biomechanical feature [[6]](https://arxiv.org/abs/2107.08430), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
+RTMLib's default human-detection stage commonly relies on YOLOX-style detectors, and YOLOX is a strong practical choice because it uses an anchor-free design, decoupled head, and modern label-assignment strategy to improve object-detection performance [[5]](https://github.com/Tau-J/rtmlib), [[6]](https://arxiv.org/abs/2107.08430). In this pipeline, the detector is not the final research output, but it is critical because poor person bounding boxes will degrade every downstream keypoint, smoothing, and biomechanical feature [[6]](https://arxiv.org/abs/2107.08430), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
 
 The early pose-estimation run processed 14 extracted frames and successfully saved both a keypoint CSV and annotated output frames. This confirms that the RTMLib model download, ONNX model loading, inference loop, CSV export, and visualization output are functioning as a complete batch-pose stage [[4]](https://arxiv.org/abs/2303.07399), [[5]](https://github.com/Tau-J/rtmlib), [[8]](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html). For final experiments, the project should record the exact model mode, checkpoint filenames, runtime backend, device, input resolution, video name, number of frames, and confidence threshold because these parameters affect reproducibility and comparability [[4]](https://arxiv.org/abs/2303.07399), [[6]](https://arxiv.org/abs/2107.08430), [[8]](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html).
 
 ---
 
-## 6. Stage 3 — Live Visualization with OpenCV
+## 6. Stage 3 - Live Visualization with OpenCV
 
 The live visualization stage is important because numerical confidence scores alone are not sufficient to prove that the skeleton is attached to the correct body landmarks [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html), [[4]](https://arxiv.org/abs/2303.07399). OpenCV is the correct tool for this stage because it can read frames, resize them for speed, draw skeleton overlays, and display the annotated stream in a real-time window [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html).
 
@@ -98,7 +93,7 @@ The live demo should report FPS, device, backend, and number of detected people 
 
 ---
 
-## 7. Stage 4 — Temporal Smoothing and Pose Quality Checking
+## 7. Stage 4 - Temporal Smoothing and Pose Quality Checking
 
 The smoothing stage applies a centered moving average to the `x` and `y` coordinates of each keypoint separately for each person and keypoint ID [[9]](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html). This is an appropriate baseline because pose estimators often produce frame-to-frame jitter, and a simple rolling mean is easy to explain, reproduce, and debug in an academic report [[9]](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
 
@@ -108,7 +103,7 @@ The current quality metrics include total keypoints, average confidence, low-con
 
 ---
 
-## 8. Stage 5 — OpenCap-Inspired 2D Biomechanical Feature Extraction
+## 8. Stage 5 - OpenCap-Inspired 2D Biomechanical Feature Extraction
 
 The biomechanics layer computes interpretable 2D features from the detected keypoints, including left and right knee angles, left and right hip angles, trunk lean angle, left-right knee-angle difference, left-right hip-angle difference, mean pose confidence, and low-confidence flags [[1]](https://github.com/mehditalebi01/HCI-for-Human-Posture-Analysis), [[12]](https://pubmed.ncbi.nlm.nih.gov/37856442/), [[13]](https://www.mdpi.com/1424-8220/22/5/1729). The code explicitly maps common COCO-17 body landmarks such as shoulders, hips, knees, and ankles, which is appropriate because COCO-style keypoint order is widely used in modern 2D pose-estimation pipelines [[4]](https://arxiv.org/abs/2303.07399), [[16]](https://arxiv.org/abs/1405.0312).
 
@@ -120,22 +115,52 @@ The current feature design is still valuable because simple 2D angular features 
 
 ## 9. Current Experimental Results
 
-The early frame-extraction test processed a 16.52-second video with 413 frames at 25 FPS and saved 14 sampled frames using a step of 30. This output demonstrates that the video decoding and extraction stage works, but it should be considered a debugging run rather than a final temporal-motion experiment because only 14 frames were retained from the full movement sequence [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
+The final reported experiment was run on `data/raw/videos/tredmil0.mp4`, a 640 x 360 treadmill-running video with 888 frames, 30 FPS, and 29.60 seconds of duration, which provides a dense enough temporal sequence for pose smoothing and time-series feature visualization [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html), [[9]](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html). All frames were extracted with `step=1`, so the downstream pose and biomechanics stages used the complete frame sequence rather than a sparse debugging sample [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
 
-The early pose-estimation test then processed all 14 extracted frames, loaded YOLOX and RTMPose ONNX models through RTMLib/ONNX Runtime, saved `data/output/keypoints.csv`, and produced annotated frames under `data/output/pose_frames` [[4]](https://arxiv.org/abs/2303.07399), [[5]](https://github.com/Tau-J/rtmlib), [[6]](https://arxiv.org/abs/2107.08430), [[8]](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html). This is a successful minimum viable result because the project has already completed the chain from raw video to extracted images, detected keypoints, and visual pose overlays [[1]](https://github.com/mehditalebi01/HCI-for-Human-Posture-Analysis), [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html), [[4]](https://arxiv.org/abs/2303.07399).
+The pose stage used local ONNX model files, specifically `models/detection/yolox_m_humanart.onnx` for human detection and `models/pose/rtmpose_m_body7.onnx` for pose estimation, with ONNX Runtime and CUDA acceleration [[4]](https://arxiv.org/abs/2303.07399), [[5]](https://github.com/Tau-J/rtmlib), [[6]](https://arxiv.org/abs/2107.08430), [[8]](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html). This is stronger for academic reporting than relying only on hidden cache downloads because the detector and pose model paths are explicit and reproducible [[5]](https://github.com/Tau-J/rtmlib), [[8]](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html).
 
-The existing project report also describes a denser later run with 888 processed frames, 15,096 keypoint rows, one detected person, average confidence of 0.8437, zero low-confidence keypoints, and a low-confidence ratio of 0.0000. These values suggest a clean single-person input condition, but they should still be interpreted together with visual overlays because high confidence does not fully rule out camera-perspective bias, incorrect anatomical interpretation, or 2D projection error [[4]](https://arxiv.org/abs/2303.07399), [[12]](https://pubmed.ncbi.nlm.nih.gov/37856442/), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
+| Experimental item | Value | Interpretation |
+|---|---:|---|
+| Input video | `data/raw/videos/tredmil0.mp4` | Final treadmill-running experiment video [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html) |
+| Resolution | 640 x 360 | Moderate resolution suitable for fast local inference [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html) |
+| Duration | 29.60 s | Long enough to show repeated movement cycles [[13]](https://www.mdpi.com/1424-8220/22/5/1729) |
+| Frame rate | 30 FPS | Standard temporal resolution for video-based movement analysis [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html) |
+| Total video frames | 888 | Complete decoded frame count [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html) |
+| Frame extraction step | 1 | Dense processing, not sparse debugging [[9]](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html) |
+| Saved frames | 888 | All video frames were used for pose estimation [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html) |
+| Annotated frames | 888 | Every processed frame has a visual overlay for qualitative checking [[4]](https://arxiv.org/abs/2303.07399) |
+| Detector model | YOLOX-M HumanArt ONNX | Explicit local detector checkpoint [[5]](https://github.com/Tau-J/rtmlib), [[6]](https://arxiv.org/abs/2107.08430) |
+| Pose model | RTMPose-M Body7 ONNX | Explicit local 2D pose checkpoint [[4]](https://arxiv.org/abs/2303.07399), [[5]](https://github.com/Tau-J/rtmlib) |
+| Backend / device | ONNX Runtime / CUDA | GPU-accelerated local inference [[8]](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html) |
+| Smoothing window | 5 frames | Centered moving average for short-term jitter reduction [[9]](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html) |
 
-| Result item | Early run | Later report run | Interpretation |
-|---|---:|---:|---|
-| Video frames available | 413 | not stated in same log | Video decoding works [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html) |
-| FPS | 25 | not stated in same log | Temporal scale is known for early run [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html) |
-| Saved / processed frames | 14 | 888 | Sparse run is for debugging; dense run is better for time-series features [[9]](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html) |
-| Keypoint rows | expected 14 × 17 for one person if all detected | 15,096 | Later run matches 888 × 17 for one person [[16]](https://arxiv.org/abs/1405.0312) |
-| Mean confidence | not stated | 0.8437 | Strong but not sufficient alone for biomechanical validation [[4]](https://arxiv.org/abs/2303.07399) |
-| Low-confidence ratio | not stated | 0.0000 | Good quality screen under the chosen threshold [[4]](https://arxiv.org/abs/2303.07399) |
+The final keypoint output contains 15,096 rows, which equals 888 frames multiplied by 17 COCO-style body keypoints for one detected person, so the detection result is temporally consistent for this clean single-person video [[4]](https://arxiv.org/abs/2303.07399), [[16]](https://arxiv.org/abs/1405.0312). The quality report shows an average confidence of 0.8437, zero low-confidence keypoints below the 0.3 threshold, and a low-confidence ratio of 0.0000, which indicates that the selected treadmill video is a suitable input for demonstrating the full pipeline [[4]](https://arxiv.org/abs/2303.07399).
 
-The reported later biomechanical summary shows large temporal variation in knee angles and smaller variation in trunk lean, which is plausible for a treadmill or running-style movement where lower limbs move dynamically while the torso remains comparatively stable [[12]](https://pubmed.ncbi.nlm.nih.gov/37856442/), [[13]](https://www.mdpi.com/1424-8220/22/5/1729). However, the left-right angle differences should not be described as clinical asymmetry until the project segments gait cycles and compares equivalent phases between limbs [[10]](https://github.com/perfanalytics/pose2sim), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
+| Quality metric | Value | Interpretation |
+|---|---:|---|
+| Processed frames | 888 | Full video sequence was analyzed [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html) |
+| Keypoint rows | 15,096 | 888 frames x 17 keypoints x 1 person [[16]](https://arxiv.org/abs/1405.0312) |
+| Unique detected persons | 1 | No multi-person identity mixing in this experiment [[6]](https://arxiv.org/abs/2107.08430) |
+| Average confidence | 0.8437 | Strong pose-estimation confidence for a prototype analysis [[4]](https://arxiv.org/abs/2303.07399) |
+| Low-confidence count | 0 | No keypoint fell below the configured 0.3 threshold [[4]](https://arxiv.org/abs/2303.07399) |
+| Low-confidence ratio | 0.0000 | Quality screen passed for this input video [[4]](https://arxiv.org/abs/2303.07399) |
+| Smoothed keypoint rows | 15,096 | Smoothing preserved the original row count [[9]](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html) |
+| Biomechanical feature rows | 888 | One feature row per frame/person [[12]](https://pubmed.ncbi.nlm.nih.gov/37856442/) |
+
+The extracted OpenCap-inspired features show expected cyclic lower-limb behavior: knee angles vary strongly over time, hip angles vary more moderately, and trunk lean remains close to vertical across the sequence [[12]](https://pubmed.ncbi.nlm.nih.gov/37856442/), [[13]](https://www.mdpi.com/1424-8220/22/5/1729). The average trunk lean is 1.214 degrees with a maximum of 2.769 degrees, which is visually consistent with an upright treadmill-running posture in the annotated frames [[12]](https://pubmed.ncbi.nlm.nih.gov/37856442/), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
+
+| Feature | Mean | Std | Min | Median | Max |
+|---|---:|---:|---:|---:|---:|
+| Left knee angle | 121.962 | 34.419 | 64.077 | 131.240 | 171.589 |
+| Right knee angle | 139.678 | 26.516 | 67.815 | 151.767 | 170.573 |
+| Left hip angle | 165.653 | 9.381 | 144.927 | 167.220 | 179.665 |
+| Right hip angle | 167.097 | 9.846 | 144.159 | 168.948 | 179.981 |
+| Trunk lean angle | 1.214 | 0.752 | 0.000 | 1.176 | 2.769 |
+| Knee angle difference | 49.033 | 27.972 | 0.064 | 51.134 | 91.522 |
+| Hip angle difference | 15.008 | 9.020 | 0.079 | 12.950 | 34.542 |
+| Mean pose confidence | 0.844 | 0.024 | 0.778 | 0.843 | 0.898 |
+
+The knee angle difference is high in many frames because the runner's left and right legs are often in different gait phases, so this feature should be interpreted as instantaneous left-right angle difference rather than clinical gait asymmetry [[10]](https://github.com/perfanalytics/pose2sim), [[11]](https://www.mdpi.com/1424-8220/21/21/6535), [[13]](https://www.mdpi.com/1424-8220/22/5/1729). In this run, 516 frames have knee angle difference above 45 degrees, while hip angle difference never exceeds 45 degrees and trunk lean never exceeds 45 degrees, which supports the interpretation that the large left-right knee difference mainly reflects alternating running phases rather than a global pose failure [[10]](https://github.com/perfanalytics/pose2sim), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
 
 ### 9.1 Visual Results and Output Interpretation
 
@@ -167,7 +192,7 @@ The asymmetry visualization should be described as instantaneous left-right angu
 
 ## 10. Tool and Model Comparison
 
-RTMLib with RTMPose is currently the best choice for this project’s first complete implementation because it provides a practical balance between accuracy, speed, installation simplicity, and ONNX-based deployment [[4]](https://arxiv.org/abs/2303.07399), [[5]](https://github.com/Tau-J/rtmlib), [[8]](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html). A full MMPose setup would provide more research flexibility and more model choices, but it is heavier to install and maintain for a step-by-step student project [[7]](https://mmpose.readthedocs.io/). MediaPipe Pose would be easier for real-time demos, but it gives less control over academic model comparison and MMPose/Pose2Sim compatibility than RTMPose-based workflows [[10]](https://github.com/perfanalytics/pose2sim), [[17]](https://developers.google.com/mediapipe/solutions/vision/pose_landmarker). ViTPose is a strong future comparison model because transformer-based pose estimators can be very accurate, but it is not the simplest first deployment target for a lightweight local pipeline [[18]](https://arxiv.org/abs/2204.12484).
+RTMLib with RTMPose is currently the best choice for this project's first complete implementation because it provides a practical balance between accuracy, speed, installation simplicity, and ONNX-based deployment [[4]](https://arxiv.org/abs/2303.07399), [[5]](https://github.com/Tau-J/rtmlib), [[8]](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html). A full MMPose setup would provide more research flexibility and more model choices, but it is heavier to install and maintain for a step-by-step student project [[7]](https://mmpose.readthedocs.io/). MediaPipe Pose would be easier for real-time demos, but it gives less control over academic model comparison and MMPose/Pose2Sim compatibility than RTMPose-based workflows [[10]](https://github.com/perfanalytics/pose2sim), [[17]](https://developers.google.com/mediapipe/solutions/vision/pose_landmarker). ViTPose is a strong future comparison model because transformer-based pose estimators can be very accurate, but it is not the simplest first deployment target for a lightweight local pipeline [[18]](https://arxiv.org/abs/2204.12484).
 
 | Option | Strength | Weakness | Best use in this project |
 |---|---|---|---|
@@ -212,27 +237,13 @@ The fourth limitation is that the project has not yet performed ground-truth val
 
 ---
 
-## 13. Recommended Next Development Steps
-
-The next implementation step should be a model registry and configuration-driven execution, where `configs/models.yaml` defines detector path, pose path, backend, device, input sizes, confidence threshold, and selected preset [[1]](https://github.com/mehditalebi01/HCI-for-Human-Posture-Analysis), [[5]](https://github.com/Tau-J/rtmlib), [[8]](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html). This will make every experiment reproducible and will prevent the code from depending on hidden cache downloads [[4]](https://arxiv.org/abs/2303.07399), [[8]](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html).
-
-The second step should be a standardized experiment runner that writes one output folder per run, including `params.yaml`, `keypoints_raw.csv`, `keypoints_smoothed.csv`, `quality_report.json`, `features.csv`, plots, and selected annotated frames [[1]](https://github.com/mehditalebi01/HCI-for-Human-Posture-Analysis), [[9]](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html). This structure will make the project easier to report because every figure and metric can be traced back to one exact experiment [[15]](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/).
-
-The third step should be a validation layer with visual checks, confidence checks, and simple numeric checks before any biomechanical interpretation is accepted [[4]](https://arxiv.org/abs/2303.07399), [[13]](https://www.mdpi.com/1424-8220/22/5/1729). For example, the project should flag frames where required landmarks are missing, mean confidence is low, left/right limbs are swapped, or computed angles jump unrealistically between adjacent frames [[9]](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
-
-The fourth step should be Pose2Sim compatibility, but only after the 2D pipeline is stable [[10]](https://github.com/perfanalytics/pose2sim), [[11]](https://www.mdpi.com/1424-8220/21/21/6535). This means exporting keypoints in a format that can be reused for multi-view calibration, synchronization, triangulation, filtering, marker augmentation, and OpenSim kinematics [[10]](https://github.com/perfanalytics/pose2sim), [[11]](https://www.mdpi.com/1424-8220/21/21/6535).
-
-The fifth step should be a report generator that automatically creates tables and plots from each experiment, because manual reporting is error-prone and difficult to reproduce [[1]](https://github.com/mehditalebi01/HCI-for-Human-Posture-Analysis), [[9]](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html). This report generator should include the model name, checkpoint paths, video metadata, frame count, confidence statistics, feature summary, limitations, and representative annotated frames [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html), [[4]](https://arxiv.org/abs/2303.07399).
-
----
-
-## 14. Slide-Ready Summary
+## 13. Conclusion
 
 This project builds a practical computer-vision pipeline that converts sports or exercise video into 2D pose keypoints and interpretable posture features [[1]](https://github.com/mehditalebi01/HCI-for-Human-Posture-Analysis), [[4]](https://arxiv.org/abs/2303.07399). The pipeline uses OpenCV for video processing, RTMLib/RTMPose for pose estimation, ONNX Runtime for deployable inference, pandas for smoothing and tabular analysis, and custom Python modules for biomechanics-inspired feature extraction [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html), [[5]](https://github.com/Tau-J/rtmlib), [[8]](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html), [[9]](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html).
 
 The main result is a working end-to-end prototype that can extract frames, estimate body keypoints, save CSV outputs, generate annotated pose frames, smooth keypoints, compute simple posture features, and support live visualization [[1]](https://github.com/mehditalebi01/HCI-for-Human-Posture-Analysis), [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html), [[4]](https://arxiv.org/abs/2303.07399). The system is scientifically useful as a prototype and educational pipeline, but it must not be presented as full OpenCap or validated 3D biomechanics because it currently relies on monocular 2D keypoints [[12]](https://pubmed.ncbi.nlm.nih.gov/37856442/), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
 
-The best next direction is to stabilize configuration and model management, add reproducible experiment folders, strengthen quality checks, and then extend toward Pose2Sim/OpenCap-style 3D workflows using multi-camera calibration and triangulation [[8]](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html), [[10]](https://github.com/perfanalytics/pose2sim), [[11]](https://www.mdpi.com/1424-8220/21/21/6535), [[12]](https://pubmed.ncbi.nlm.nih.gov/37856442/).
+The experimental outputs show that the current implementation can produce visually interpretable skeleton overlays, high-confidence 2D keypoints, smoothed keypoint trajectories, and OpenCap-inspired 2D posture features for a clean single-person sports video [[4]](https://arxiv.org/abs/2303.07399), [[9]](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html), [[12]](https://pubmed.ncbi.nlm.nih.gov/37856442/). Therefore, the project is suitable as an academic demonstration of a modular posture-analysis pipeline, provided that its outputs are described as 2D prototype measurements rather than calibrated clinical joint kinematics [[12]](https://pubmed.ncbi.nlm.nih.gov/37856442/), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
 
 ---
 
@@ -257,3 +268,4 @@ The best next direction is to stabilize configuration and model management, add 
 [17] Google AI Edge, **MediaPipe Pose Landmarker**. https://developers.google.com/mediapipe/solutions/vision/pose_landmarker  
 [18] Y. Xu et al., **ViTPose: Simple Vision Transformer Baselines for Human Pose Estimation**, arXiv:2204.12484, 2022. https://arxiv.org/abs/2204.12484  
 [19] W. Zhu et al., **MotionBERT: A Unified Perspective on Learning Human Motion Representations**, arXiv:2210.06551, 2022. https://arxiv.org/abs/2210.06551
+
