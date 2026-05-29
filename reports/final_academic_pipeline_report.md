@@ -158,13 +158,6 @@ The current biomechanical features are 2D surrogate measures, so camera perspect
 
 The detector bounding boxes are not yet exported separately because RTMLib's `Body` wrapper hides the detection stage behind the pose API, so future work should separate detection output if tracking and detection quality analysis are required [RTMLib](https://github.com/Tau-J/rtmlib), [YOLOX](https://arxiv.org/abs/2107.08430).
 
-## Recommended Next Steps
-
-The next technical step should be to add tracking, because stable `track_id` values are required before multi-person videos can be used for longitudinal posture and biomechanics analysis [RTMLib PoseTracker](https://github.com/Tau-J/rtmlib), [Pose2Sim](https://pmc.ncbi.nlm.nih.gov/articles/PMC8512754/).
-
-The next scientific step should be to replace instantaneous left-right angle differences with gait-cycle-aware metrics, because running naturally alternates limb phases and high same-frame knee differences do not automatically imply pathological asymmetry [Pose2Sim](https://pmc.ncbi.nlm.nih.gov/articles/PMC8512754/).
-
-The next validation step should be manual annotation or comparison against a calibrated system, because visual inspection and confidence scores are useful but do not provide quantitative ground truth for joint angle accuracy [2D/3D Joint Angle Accuracy](https://www.mdpi.com/1424-8220/22/5/1729), [OpenCap](https://pubmed.ncbi.nlm.nih.gov/37856442/).
 
 ## References
 
