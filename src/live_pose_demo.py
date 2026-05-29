@@ -66,7 +66,7 @@ def run_live_pose_demo(video_path):
     openpose_skeleton = False
     pose_model = Body(
         to_openpose=openpose_skeleton,
-        mode="performance",
+        mode="balanced",
         backend=backend,
         device=device,
     )
