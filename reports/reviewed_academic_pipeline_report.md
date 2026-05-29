@@ -137,6 +137,32 @@ The existing project report also describes a denser later run with 888 processed
 
 The reported later biomechanical summary shows large temporal variation in knee angles and smaller variation in trunk lean, which is plausible for a treadmill or running-style movement where lower limbs move dynamically while the torso remains comparatively stable [[12]](https://pubmed.ncbi.nlm.nih.gov/37856442/), [[13]](https://www.mdpi.com/1424-8220/22/5/1729). However, the left-right angle differences should not be described as clinical asymmetry until the project segments gait cycles and compares equivalent phases between limbs [[10]](https://github.com/perfanalytics/pose2sim), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
 
+### 9.1 Visual Results and Output Interpretation
+
+The annotated pose frames below provide a qualitative check that the skeleton is attached to the visible body landmarks, which is necessary because confidence scores alone cannot fully prove anatomical correctness [[3]](https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html), [[4]](https://arxiv.org/abs/2303.07399). Frame `000014` shows the system tracking one visible runner on a treadmill, and the estimated shoulder, hip, knee, and ankle landmarks are visually aligned with the body well enough for prototype-level 2D analysis [[4]](https://arxiv.org/abs/2303.07399), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
+
+![Annotated pose frame 000014](../data/outputs/annotated_frames/frame_000014.jpg)
+
+Frame `000375` shows a different gait phase, where one leg is flexed while the other is more extended; this visual evidence explains why same-frame left-right knee angle differences can be large during running even when the pose estimate itself is reasonable [[10]](https://github.com/perfanalytics/pose2sim), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
+
+![Annotated pose frame 000375](../data/outputs/annotated_frames/frame_000375.jpg)
+
+The knee-angle visualization shows repeated oscillations across the video, which is consistent with cyclic lower-limb motion in treadmill running, but the plot should still be interpreted as 2D image-plane angular behavior rather than calibrated 3D knee kinematics [[12]](https://pubmed.ncbi.nlm.nih.gov/37856442/), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
+
+![Knee angle visualization](../data/outputs/reports/opencap_style_plots/knee_angles.png)
+
+The hip-angle visualization is more bounded than the knee-angle visualization, which is expected because the hip and trunk region usually shows less apparent image-plane motion than the distal lower limbs during treadmill running [[10]](https://github.com/perfanalytics/pose2sim), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
+
+![Hip angle visualization](../data/outputs/reports/opencap_style_plots/hip_angles.png)
+
+The trunk-lean visualization remains close to zero degrees across the sequence, which matches the visual observation of an upright treadmill-running posture and supports the internal consistency of the extracted trunk feature [[12]](https://pubmed.ncbi.nlm.nih.gov/37856442/), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
+
+![Trunk lean visualization](../data/outputs/reports/opencap_style_plots/trunk_lean.png)
+
+The asymmetry visualization should be described as instantaneous left-right angular difference, not clinical asymmetry, because the current system does not yet identify gait cycles or compare left and right limbs at matched movement phases [[10]](https://github.com/perfanalytics/pose2sim), [[11]](https://www.mdpi.com/1424-8220/21/21/6535), [[13]](https://www.mdpi.com/1424-8220/22/5/1729).
+
+![Instantaneous angle-difference visualization](../data/outputs/reports/opencap_style_plots/asymmetry.png)
+
 ---
 
 ## 10. Tool and Model Comparison
