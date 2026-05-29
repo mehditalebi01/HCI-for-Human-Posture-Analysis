@@ -141,6 +141,38 @@ To display only and skip saving:
 python src/scripts/live_pose_demo.py --video data/raw/videos/test.mp4 --no-save
 ```
 
+## Stage 3: Pose Smoothing and Quality Check
+
+Smooth raw 2D keypoints before biomechanics:
+
+```bash
+python src/scripts/smooth_keypoints.py --input data/processed/keypoints/keypoints.csv --output data/processed/smoothed_keypoints/smoothed_keypoints.csv --quality-report data/outputs/reports/pose_quality.csv --window-size 5
+```
+
+By default, this reads `data/processed/keypoints/keypoints.csv`, smooths `x` and `y` per `person_id` and `keypoint_id`, keeps confidence unchanged, and writes a quality report to `data/outputs/reports/pose_quality.csv`.
+
+## Stage 4: OpenCap-Style Biomechanical Features
+
+Extract OpenCap-inspired 2D biomechanical surrogate features from smoothed keypoints:
+
+```bash
+python src/scripts/extract_opencap_style_features.py --input data/processed/smoothed_keypoints/smoothed_keypoints.csv --output data/processed/biomechanics/opencap_style_features.csv --plots-dir data/outputs/reports/opencap_style_plots --confidence-threshold 0.3
+```
+
+This creates:
+
+```text
+data/processed/biomechanics/opencap_style_features.csv
+data/outputs/reports/opencap_style_plots/knee_angles.png
+data/outputs/reports/opencap_style_plots/hip_angles.png
+data/outputs/reports/opencap_style_plots/trunk_lean.png
+data/outputs/reports/opencap_style_plots/asymmetry.png
+```
+
+These are OpenCap-style or OpenCap-inspired 2D surrogate features. This project is not using the full OpenCap cloud/system pipeline yet, and these features are not calibrated 3D biomechanics.
+
+Future work: full OpenCap or Pose2Sim integration requires calibrated multi-camera data or the OpenCap capture workflow.
+
 ## Compatibility Commands
 
 The earlier script paths are still present as wrappers:
