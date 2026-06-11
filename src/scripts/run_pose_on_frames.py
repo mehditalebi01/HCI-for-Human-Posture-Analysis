@@ -3,7 +3,6 @@ import sys
 from pathlib import Path
 
 import cv2
-import yaml
 from tqdm import tqdm
 
 # Allow running this file directly before `pip install -e .`.
@@ -14,22 +13,8 @@ if str(SRC_DIR) not in sys.path:
 from hpa.pose.pose_estimator import RTMPoseEstimator
 from hpa.pose.visualization import draw_pose
 from hpa.io.keypoint_io import keypoints_to_rows, save_keypoints_csv
+from hpa.utils.model_config import load_model_preset
 from hpa.utils.paths import ensure_dir, list_images
-
-
-def load_default_model_paths(config_path="configs/models.yaml"):
-    """Read local model paths from the model config file."""
-    path = Path(config_path)
-
-    if not path.exists():
-        return None, None
-
-    with path.open("r", encoding="utf-8") as config_file:
-        config = yaml.safe_load(config_file) or {}
-
-    det_path = config.get("detection", {}).get("path")
-    pose_path = config.get("pose", {}).get("path")
-    return det_path, pose_path
 
 
 def parse_args():
@@ -72,9 +57,9 @@ def main():
         print(f"Error: no .jpg or .png frames found in: {args.input}")
         return 1
 
-    default_det_model, default_pose_model = load_default_model_paths()
-    det_model = args.det_model or default_det_model
-    pose_model = args.pose_model or default_pose_model
+    model_preset = load_model_preset(args.mode)
+    det_model = args.det_model or model_preset["det_model"]
+    pose_model = args.pose_model or model_preset["pose_model"]
 
     estimator = RTMPoseEstimator(
         device=args.device,
@@ -82,6 +67,8 @@ def main():
         mode=args.mode,
         det_model_path=det_model,
         pose_model_path=pose_model,
+        det_input_size=model_preset["det_input_size"],
+        pose_input_size=model_preset["pose_input_size"],
     )
 
     output_folder = ensure_dir(args.output_frames)

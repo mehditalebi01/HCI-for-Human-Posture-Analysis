@@ -1,0 +1,7 @@
+Loaded keypoints: D:\PROJECT\HCI-for-Human-Posture-Analysis\data\outputs\model_mode_comparison\lightweight\keypoints.csv
+Saved smoothed keypoints: D:\PROJECT\HCI-for-Human-Posture-Analysis\data\outputs\model_mode_comparison\lightweight\smoothed_keypoints.csv
+Saved quality report: D:\PROJECT\HCI-for-Human-Posture-Analysis\data\outputs\model_mode_comparison\lightweight\pose_quality.csv
+Total keypoints: 15096
+Average confidence: 0.8468
+Low confidence ratio: 0.0000
+Frames processed: 888

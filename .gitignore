@@ -18,6 +18,6 @@ __pycache__/
 Thumbs.db
 
 # Local model weights are large and should be downloaded locally.
-models/*
+models/**
 !models/**/
 !models/**/.gitkeep

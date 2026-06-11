@@ -61,6 +61,24 @@ def prepare_model(model_key, model_config):
         print(f"Prepared {model_name}: {target_path}")
 
 
+def iter_model_entries(config):
+    """Yield all model entries that define a path and source URL.
+
+    Supports both the old single-model config and the newer mode preset config.
+    """
+    presets = config.get("mode_presets", {})
+    for mode_name, preset in presets.items():
+        for model_type in ("detection", "pose"):
+            model_config = preset.get(model_type)
+            if model_config and "path" in model_config and "source_url" in model_config:
+                yield f"{mode_name}_{model_type}", model_config
+
+    for model_key in ("detection", "pose"):
+        model_config = config.get(model_key)
+        if model_config and "path" in model_config and "source_url" in model_config:
+            yield model_key, model_config
+
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Download configured model archives and prepare local ONNX files."
@@ -84,7 +102,7 @@ def main():
     with config_path.open("r", encoding="utf-8") as config_file:
         config = yaml.safe_load(config_file) or {}
 
-    for model_key, model_config in config.items():
+    for model_key, model_config in iter_model_entries(config):
         prepare_model(model_key, model_config)
 
     print("Model preparation complete.")

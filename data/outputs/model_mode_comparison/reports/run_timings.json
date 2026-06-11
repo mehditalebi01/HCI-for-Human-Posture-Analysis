@@ -1,0 +1,82 @@
+[
+  {
+    "mode": "shared",
+    "stage": "extract_frames",
+    "seconds": 1.4633555999898817,
+    "returncode": 0,
+    "log": "D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\reports\\shared_extract_frames.log",
+    "command": "C:\\Users\\mehdi\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\python.exe src/scripts/extract_frames.py --video data/raw/videos/tredmil0.mp4 --output D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\frames --step 1"
+  },
+  {
+    "mode": "lightweight",
+    "stage": "pose",
+    "seconds": 73.25967890000902,
+    "returncode": 0,
+    "log": "D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\reports\\lightweight_pose.log",
+    "command": "C:\\Users\\mehdi\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\python.exe src/scripts/run_pose_on_frames.py --input D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\frames --output-csv D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\lightweight\\keypoints.csv --output-frames D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\lightweight\\annotated_frames --device cuda --mode lightweight"
+  },
+  {
+    "mode": "lightweight",
+    "stage": "smooth",
+    "seconds": 3.795465900009731,
+    "returncode": 0,
+    "log": "D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\reports\\lightweight_smooth.log",
+    "command": "C:\\Users\\mehdi\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\python.exe src/scripts/smooth_keypoints.py --input D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\lightweight\\keypoints.csv --output D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\lightweight\\smoothed_keypoints.csv --quality-report D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\lightweight\\pose_quality.csv --window-size 5"
+  },
+  {
+    "mode": "lightweight",
+    "stage": "features",
+    "seconds": 6.549325300002238,
+    "returncode": 0,
+    "log": "D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\reports\\lightweight_features.log",
+    "command": "C:\\Users\\mehdi\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\python.exe src/scripts/extract_opencap_style_features.py --input D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\lightweight\\smoothed_keypoints.csv --output D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\lightweight\\opencap_style_features.csv --plots-dir D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\lightweight\\plots --confidence-threshold 0.3"
+  },
+  {
+    "mode": "balanced",
+    "stage": "pose",
+    "seconds": 227.52996089999215,
+    "returncode": 0,
+    "log": "D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\reports\\balanced_pose.log",
+    "command": "C:\\Users\\mehdi\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\python.exe src/scripts/run_pose_on_frames.py --input D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\frames --output-csv D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\balanced\\keypoints.csv --output-frames D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\balanced\\annotated_frames --device cuda --mode balanced"
+  },
+  {
+    "mode": "balanced",
+    "stage": "smooth",
+    "seconds": 1.4436800999974366,
+    "returncode": 0,
+    "log": "D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\reports\\balanced_smooth.log",
+    "command": "C:\\Users\\mehdi\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\python.exe src/scripts/smooth_keypoints.py --input D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\balanced\\keypoints.csv --output D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\balanced\\smoothed_keypoints.csv --quality-report D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\balanced\\pose_quality.csv --window-size 5"
+  },
+  {
+    "mode": "balanced",
+    "stage": "features",
+    "seconds": 3.4872936000174377,
+    "returncode": 0,
+    "log": "D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\reports\\balanced_features.log",
+    "command": "C:\\Users\\mehdi\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\python.exe src/scripts/extract_opencap_style_features.py --input D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\balanced\\smoothed_keypoints.csv --output D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\balanced\\opencap_style_features.csv --plots-dir D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\balanced\\plots --confidence-threshold 0.3"
+  },
+  {
+    "mode": "performance",
+    "stage": "pose",
+    "seconds": 723.1430591999961,
+    "returncode": 0,
+    "log": "D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\reports\\performance_pose.log",
+    "command": "C:\\Users\\mehdi\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\python.exe src/scripts/run_pose_on_frames.py --input D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\frames --output-csv D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\performance\\keypoints.csv --output-frames D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\performance\\annotated_frames --device cuda --mode performance"
+  },
+  {
+    "mode": "performance",
+    "stage": "smooth",
+    "seconds": 1.9400956000026781,
+    "returncode": 0,
+    "log": "D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\reports\\performance_smooth.log",
+    "command": "C:\\Users\\mehdi\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\python.exe src/scripts/smooth_keypoints.py --input D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\performance\\keypoints.csv --output D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\performance\\smoothed_keypoints.csv --quality-report D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\performance\\pose_quality.csv --window-size 5"
+  },
+  {
+    "mode": "performance",
+    "stage": "features",
+    "seconds": 3.370990900002653,
+    "returncode": 0,
+    "log": "D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\reports\\performance_features.log",
+    "command": "C:\\Users\\mehdi\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\python.exe src/scripts/extract_opencap_style_features.py --input D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\performance\\smoothed_keypoints.csv --output D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\performance\\opencap_style_features.csv --plots-dir D:\\PROJECT\\HCI-for-Human-Posture-Analysis\\data\\outputs\\model_mode_comparison\\performance\\plots --confidence-threshold 0.3"
+  }
+]
