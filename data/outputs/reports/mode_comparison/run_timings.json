@@ -1,0 +1,44 @@
+{
+  "lightweight": {
+    "pose_seconds": 57.72085740001057,
+    "smooth_seconds": 3.5909566000045743,
+    "features_seconds": 4.7571905000077095,
+    "total_seconds": 66.06900450002286,
+    "paths": {
+      "keypoints": "data\\processed\\keypoints\\keypoints_lightweight.csv",
+      "smoothed": "data\\processed\\smoothed_keypoints\\smoothed_keypoints_lightweight.csv",
+      "quality": "data\\outputs\\reports\\mode_comparison\\pose_quality_lightweight.csv",
+      "features": "data\\processed\\biomechanics\\opencap_style_features_lightweight.csv",
+      "annotated_frames": "data\\outputs\\mode_comparison\\lightweight\\annotated_frames",
+      "plots": "data\\outputs\\reports\\mode_comparison\\lightweight_plots"
+    }
+  },
+  "balanced": {
+    "pose_seconds": 51.76766049998696,
+    "smooth_seconds": 0.9509214000136126,
+    "features_seconds": 3.245446600019932,
+    "total_seconds": 55.964028500020504,
+    "paths": {
+      "keypoints": "data\\processed\\keypoints\\keypoints_balanced.csv",
+      "smoothed": "data\\processed\\smoothed_keypoints\\smoothed_keypoints_balanced.csv",
+      "quality": "data\\outputs\\reports\\mode_comparison\\pose_quality_balanced.csv",
+      "features": "data\\processed\\biomechanics\\opencap_style_features_balanced.csv",
+      "annotated_frames": "data\\outputs\\mode_comparison\\balanced\\annotated_frames",
+      "plots": "data\\outputs\\reports\\mode_comparison\\balanced_plots"
+    }
+  },
+  "performance": {
+    "pose_seconds": 49.32450690001133,
+    "smooth_seconds": 0.8681689999939408,
+    "features_seconds": 3.01885220000986,
+    "total_seconds": 53.21152810001513,
+    "paths": {
+      "keypoints": "data\\processed\\keypoints\\keypoints_performance.csv",
+      "smoothed": "data\\processed\\smoothed_keypoints\\smoothed_keypoints_performance.csv",
+      "quality": "data\\outputs\\reports\\mode_comparison\\pose_quality_performance.csv",
+      "features": "data\\processed\\biomechanics\\opencap_style_features_performance.csv",
+      "annotated_frames": "data\\outputs\\mode_comparison\\performance\\annotated_frames",
+      "plots": "data\\outputs\\reports\\mode_comparison\\performance_plots"
+    }
+  }
+}

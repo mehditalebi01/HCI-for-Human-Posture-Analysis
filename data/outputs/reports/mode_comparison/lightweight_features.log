@@ -1,0 +1,5 @@
+Extracted OpenCap-inspired 2D surrogate features.
+Input keypoints: D:\PROJECT\HCI-for-Human-Posture-Analysis\data\processed\smoothed_keypoints\smoothed_keypoints_lightweight.csv
+Saved features: D:\PROJECT\HCI-for-Human-Posture-Analysis\data\processed\biomechanics\opencap_style_features_lightweight.csv
+Saved plots: D:\PROJECT\HCI-for-Human-Posture-Analysis\data\outputs\reports\mode_comparison\lightweight_plots
+Rows: 888
